@@ -1,0 +1,175 @@
+<!-- AUSHEV MUHAMMAD -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>КТ 4 по jsDom</title>
+    <!-- стили css (aushev) -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <!-- Первый ползунок (aushev) -->
+        <div class="slide_main">
+            <p>Track</p>
+            <input type="range" min="0" max="1000" value="635" class="slide1" id="slider" step="200">
+            <div class="slide_number">
+                <span class="span"></span>
+                <span class="span"></span>
+                <span class="span"></span>
+                <span class="span"></span>
+                <span class="span"></span>
+                <span class="span"></span>
+            </div>
+            <div class="slide_number">
+                <span>0</span>
+                <span>20</span>
+                <span>40</span>
+                <span>60</span>
+                <span>80</span>
+                <span>100</span>
+            </div>
+        </div>
+        <!-- второй ползунок (aushev) -->
+        <div class="slide_main1">
+            <p>Divisor</p>
+            <input type="range" min="100" max="1000" value="620" class="slide2" id="slider2" step="100">
+            <div class="spanClass">
+                <span class="span1"></span>
+                <span class="span1"></span>
+                <span class="span1"></span>
+                <span class="span1"></span>
+                <span class="span1"></span>
+                <span class="span1"></span>
+                <span class="span1"></span>
+                <span class="span1"></span>
+                <span class="span1"></span>
+                <span class="span1"></span>
+            </div>
+        </div>
+        <!-- Третий ползунок (aushev) -->
+        <div class="abc">
+            <p>Thumb</p>
+            <div id="slider22">
+                <div id="handle"></div>
+                <div class="spanI">
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <!-- Четвертый ползунок (aushev) -->
+        <div class="slide_main1">
+            <p>Tick</p>
+            <input type="range" min="100" max="1000" value="620" class="slide24" id="slider2" step="10">
+            <div class="spanClass">
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+                <span class="span4"></span>
+            </div>
+        </main>
+
+    <script>
+        // Получаем элементы слайдера и бегунка
+        const slider = document.getElementById('slider22');
+            const handle = document.getElementById('handle');
+            const sliderValue = document.getElementById('sliderValue');
+
+            // Минимальное и максимальное значения для слайдера
+            const minValue = 0;
+            const maxValue = 100;
+
+            // Функция для получения значения слайдера из позиции бегунка
+            function getValueFromPosition(positionX) {
+                const sliderWidth = slider.offsetWidth;
+                const percentage = (positionX / sliderWidth) * 100;
+                const value = Math.round((maxValue - minValue) * (percentage / 100));
+                return value;
+            }
+
+            // Функция для установки позиции бегунка на слайдере
+            function setPositionFromValue(value) {
+                const percentage = (value / (maxValue - minValue)) * 100;
+                const handlePosition = (percentage * slider.offsetWidth) / 100;
+                handle.style.left = `${handlePosition - (handle.offsetWidth / 2)}px`;
+            }
+
+            // Инициализация бегунка в начальное положение
+            setPositionFromValue(minValue);
+
+            // Обработчик события для перемещения бегунка при нажатии на него и перетаскивании
+            handle.addEventListener('mousedown', function(event) {
+                event.preventDefault();
+
+                // Получаем начальные координаты
+                const startX = event.clientX;
+                const startLeft = handle.offsetLeft;
+
+                // Функция для обновления позиции бегунка при перемещении
+                function onMouseMove(moveEvent) {
+                    const deltaX = moveEvent.clientX - startX;
+                    const newLeft = startLeft + deltaX;
+                    if (newLeft >= 0 && newLeft <= slider.offsetWidth - handle.offsetWidth) {
+                        handle.style.left = `${newLeft}px`;
+                        const value = getValueFromPosition(newLeft + (handle.offsetWidth / 2));
+                        sliderValue.value = value;
+                    }
+                }
+
+                // Добавляем обработчики событий движения мыши и отпускания кнопки
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', function onMouseUp() {
+                    document.removeEventListener('mousemove', onMouseMove);
+                    document.removeEventListener('mouseup', onMouseUp);
+                });
+            });
+    </script>
+</body>
+</html>
